@@ -11,11 +11,33 @@ public class FluxAndMonoGeneratorService {
         return Flux.fromIterable(List.of("alex", "ben", "chloe")).log();
     }
 
-    public Flux<String> namesFlux_map(){
+    public Flux<String> namesFlux_map(int stringLength){
         return Flux.fromIterable(List.of("alex", "ben", "chloe"))
                 .map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength)
+                .map(s -> s.length() + "-" + s)
                 //.map(s -> s.toUpperCase())
                 .log();
+    }
+
+    public Flux<String> namesFlux_flatmap(int stringLength){
+        return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+                .map(String::toUpperCase)
+                .filter(s -> s.length() > stringLength)
+                .flatMap( s -> splitString(s))
+                .log();
+    }
+
+    public Flux<String> splitString(String name){
+        var charArray = name.split("");
+        return  Flux.fromArray(charArray);
+    }
+
+    public Flux<String> namesFlux_immutable(){
+        var namesFlux = Flux.fromIterable(List.of("alex", "ben", "chloe"));
+        namesFlux.map(String::toUpperCase);
+        return namesFlux;
+
     }
 
     public Mono nameMono(){
