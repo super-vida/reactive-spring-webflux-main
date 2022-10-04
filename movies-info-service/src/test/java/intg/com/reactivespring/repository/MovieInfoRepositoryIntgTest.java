@@ -21,6 +21,7 @@ class MovieInfoRepositoryIntgTest {
 	@Autowired
 	MovieInfoRepository movieInfoRepository;
 
+
 	@BeforeEach
 	void setUp() {
 		var movieinfos = List.of(new MovieInfo(null, "Batman Begins",
