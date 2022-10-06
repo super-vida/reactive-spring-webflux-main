@@ -105,10 +105,10 @@ public class MoviesInfoControllerUnitTest {
 	void addMovieInfoValidation() {
 
 		var movieInfo = new MovieInfo(null, "",
-				-2005, List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"));
+				-2005, List.of(""), LocalDate.parse("2005-06-15"));
 
-		when(moviesInfoServiceMock.addMovieInfo(isA(MovieInfo.class))).thenReturn(Mono.just(new MovieInfo("mockId", "Batman Begins1",
-				2005, List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"))));
+//		when(moviesInfoServiceMock.addMovieInfo(isA(MovieInfo.class))).thenReturn(Mono.just(new MovieInfo("mockId", "Batman Begins1",
+//				2005, List.of("Christian Bale", "Michael Cane"), LocalDate.parse("2005-06-15"))));
 
 		webTestClient.post()
 				.uri(MOVIES_INFO_URL)
@@ -120,6 +120,8 @@ public class MoviesInfoControllerUnitTest {
 					String responseBody = stringEntityExchangeResult.getResponseBody();
 					System.out.println(responseBody);
 					assert responseBody != null;
+					var expectedErrorMessage = "movieInfo.cast must be present,movieInfo.name must be present,movieInfo.year must be positive value";
+					assertEquals(expectedErrorMessage, responseBody);
 				});
 //				.consumeWith(movieInfoEntityExchangeResult -> {
 //					var savedMovieInfo = movieInfoEntityExchangeResult.getResponseBody();
